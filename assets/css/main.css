@@ -2116,13 +2116,13 @@ input[type="radio"]+label:before {
 /* Box */
 
 .skillicons i {
-    margin-left: 15px;
-    margin-right: 6px;
+    margin-left: 17px;
+    margin-right: 3px;
 }
 
 .skillicons svg {
-    margin-left: 15px;
-    margin-right: 0px;
+    margin-left: 17px;
+    margin-right: 3px;
     margin-bottom: -4px;
 }
 
