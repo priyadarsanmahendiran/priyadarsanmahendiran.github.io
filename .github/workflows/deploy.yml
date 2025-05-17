@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master 
+      - main  # or your default branch
 
 permissions:
   contents: write
@@ -14,11 +14,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for proper commits
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'  # or your preferred version
+          cache: 'npm'  # Cache npm dependencies
           
       - name: Install dependencies
         run: npm ci
@@ -26,12 +29,24 @@ jobs:
       - name: Build
         run: npm run build
         
-      # Create the .nojekyll file if it doesn't exist
-      - name: Create .nojekyll file
-        run: touch ./dist/.nojekyll
+      - name: Debug build output
+        run: |
+          echo "Listing build output files:"
+          ls -la dist/
+          echo "Checking for assets:"
+          ls -la dist/assets/ || echo "No assets directory found"
+        
+      # Create necessary files for GitHub Pages
+      - name: Prepare for deployment
+        run: |
+          touch dist/.nojekyll
+          echo "www.priyadarsanmahendiran.com" > dist/CNAME
           
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist  # The folder the action should deploy
-          branch: master
+          folder: dist
+          branch: gh-pages
+          clean: false  # Don't remove existing files
+          # Use this to debug if needed
+          commit-message: "Deploy to GitHub Pages [ci skip]"
