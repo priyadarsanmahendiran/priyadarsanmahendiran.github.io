@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -31,6 +31,8 @@ import {
   TooltipContent,
 } from "./ui/tooltip";
 
+import emailjs from "@emailjs/browser";
+
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -60,8 +62,21 @@ const ContactForm = ({
   resumeUrl = "/resume.pdf",
   onSubmit,
 }: ContactFormProps) => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [messageSentSuccessfully, setMessageSentSuccessfully] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    const handleEmailJS = async () => {
+      try {
+        emailjs.init("jO46eHSzk-3WY-lf9");
+      } catch (error) {
+        console.error("Error initializing EmailJS:", error);
+      }
+    };
+    handleEmailJS();
+  });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -76,15 +91,28 @@ const ContactForm = ({
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      emailjs
+        .sendForm("service_xn50liq", "template_99vge78", formRef.current, {
+          publicKey: "jO46eHSzk-3WY-lf9",
+        })
+        .then(
+          () => {
+            console.log("SUCCESS!");
+            setIsSubmitted(true);
+            setMessageSentSuccessfully(true);
+            form.reset();
+          },
+          (error) => {
+            console.log("FAILED...", error.text);
+            setIsSubmitted(true);
+            setMessageSentSuccessfully(false);
+            form.reset();
+          }
+        );
 
       if (onSubmit) {
         onSubmit(values);
       }
-
-      setIsSubmitted(true);
-      form.reset();
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -104,35 +132,65 @@ const ContactForm = ({
         </CardHeader>
         <CardContent>
           {isSubmitted ? (
-            <div className="text-center py-8">
-              <div className="mb-4 text-green-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-16 w-16 mx-auto"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+            messageSentSuccessfully ? (
+              <div className="text-center py-8">
+                <div className="mb-4 text-green-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 mx-auto"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-medium mb-2">Message Sent!</h3>
+                <p className="text-muted-foreground mb-4">
+                  Thank you for reaching out. I'll respond to your message soon.
+                </p>
+                <Button onClick={() => setIsSubmitted(false)}>
+                  Send Another Message
+                </Button>
               </div>
-              <h3 className="text-xl font-medium mb-2">Message Sent!</h3>
-              <p className="text-muted-foreground mb-4">
-                Thank you for reaching out. I'll respond to your message soon.
-              </p>
-              <Button onClick={() => setIsSubmitted(false)}>
-                Send Another Message
-              </Button>
-            </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="mb-4 text-green-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 mx-auto"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-medium mb-2">
+                  Message Posting Failed!
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  Apologies for the inconvenience. Please try again later or
+                  contact me via socials
+                </p>
+                <Button onClick={() => setIsSubmitted(false)}>Try again</Button>
+              </div>
+            )
           ) : (
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(handleSubmit)}
+                ref={formRef}
                 className="space-y-6"
               >
                 <FormField
