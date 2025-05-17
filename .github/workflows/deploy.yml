@@ -35,3 +35,4 @@ jobs:
         with:
           folder: dist  # The folder the action should deploy
           branch: master
+          clean: false
