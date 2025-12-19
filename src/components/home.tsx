@@ -103,7 +103,7 @@ const Home = () => {
       type: "work",
       title: "Software Engineer III",
       organization: "Walmart Global Tech India",
-      period: "Sep 2024 - Present",
+      period: "Sep 2024 - Jun 2025",
       description:
         "Design and develop robust, scalable features for enterprise-grade WMS solutions. Contribute across the development lifecycle — from technical design and implementation to code reviews and optimizations. Actively participate in architecture discussions, ensuring performance, reliability, and clean code principles are upheld.",
     },
@@ -118,6 +118,15 @@ const Home = () => {
     },
     {
       id: 3,
+      type: "education",
+      title: "MS in Software Engineering and Technology",
+      organization: "Chalmers University of Technology",
+      period: "2025 - 2027 (Expected)",
+      description:
+        "Awarded with IPOET scholarship.",
+    },
+    {
+      id: 4,
       type: "education",
       title: "BE in Computer Science and Engineering",
       organization: "PSG College of Technology",
