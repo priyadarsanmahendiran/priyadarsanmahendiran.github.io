@@ -67,6 +67,26 @@ const Home = () => {
   const projects = [
     {
       id: 1,
+      title: "Sub Slayer",
+      description:
+        "Sub Slayer is a subscription management app that helps users track their subscriptions and save money. Built with Flutter and SQLite, it works seamlessly without needing any authentication.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1682309524785-cf2288f7b544?q=80&w=2112&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      technologies: ["Flutter", "SQLite"],
+      githubUrl: "https://github.com/priyadarsanmahendiran/SubSlayer"
+    },
+    {
+      id: 2,
+      title: "Desktop Organiser",
+      description:
+        "Desktop Organiser is a AI-powered desktop application that helps users organise their files and folders. Built using python and Ollama for local LLM inference.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1683309565422-77818a287060?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      technologies: ["Python", "Ollama"],
+      githubUrl: "https://github.com/priyadarsanmahendiran/Desktop-Organiser"
+    },
+    {
+      id: 3,
       title: "Job Log",
       description:
         "JobLog is a work journaling app that helps developers log daily tasks and auto-generate stand-up reports. Built with Kotlin for mobile and Spring Boot for backend, it features secure JWT auth, scheduled summaries, and real-time reporting to streamline developer productivity.",
@@ -76,7 +96,7 @@ const Home = () => {
       githubUrl: "https://github.com/priyadarsanmahendiran/JobLog"
     },
     {
-      id: 2,
+      id: 4,
       title: "BLOK - Clasroom booking system",
       description:
         "An interactive classroom booking system built to streamline room reservations across campus. Enabled students and faculty to view availability, book slots, and manage schedules through a user-friendly interface. Focused on reducing scheduling conflicts and improving space utilization.",
@@ -86,7 +106,7 @@ const Home = () => {
       githubUrl: "https://github.com/priyadarsanmahendiran/BLOK"
     },
     {
-      id: 3,
+      id: 5,
       title: "Soukya - vRehab",
       description:
         "Soukya is a computer vision-based exercise monitoring system that uses a device’s camera and OpenCV (Python) to track movements and provide real-time feedback. Integrated with a web app to manage patient records, doctor details, and track progress for personalized rehab and fitness workflows.",
