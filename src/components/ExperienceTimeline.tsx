@@ -1,7 +1,4 @@
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 
 interface TimelineItemProps {
   date: string;
@@ -10,6 +7,7 @@ interface TimelineItemProps {
   description: string;
   skills?: string[];
   isLast?: boolean;
+  type?: "work" | "education";
 }
 
 const TimelineItem = ({
@@ -19,42 +17,37 @@ const TimelineItem = ({
   description,
   skills = [],
   isLast = false,
+  type = "work",
 }: TimelineItemProps) => {
+  const dotColor = type === "work" ? "bg-primary" : "bg-accent";
+  const lineColor = type === "work" ? "bg-primary/20" : "bg-accent/20";
+  const borderColor = type === "work" ? "border-l-primary/50" : "border-l-accent/50";
+
   return (
-    <div className="relative flex gap-6 pb-8 bg-background">
-      {/* Timeline connector */}
+    <div className="relative flex gap-4 pb-8">
       {!isLast && (
-        <div className="absolute left-[19px] top-[40px] h-full w-[2px] bg-border" />
+        <div className={`absolute left-[13px] top-[28px] bottom-0 w-px ${lineColor}`} />
       )}
-
-      {/* Timeline dot */}
-      <div className="relative z-10 mt-2 h-10 w-10 rounded-full border-4 border-background bg-primary flex items-center justify-center text-primary-foreground font-bold">
-      </div>
-
-      {/* Content */}
-      <Card className="flex-1 mb-6">
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-            <div>
-              <h3 className="text-xl font-bold">{title}</h3>
-              <p className="text-muted-foreground">{company}</p>
-            </div>
-            <p className="text-sm text-muted-foreground mt-1 md:mt-0">{date}</p>
+      <div className={`relative z-10 mt-1 w-7 h-7 rounded-full ${dotColor} flex-shrink-0 ring-4 ring-background shadow-sm`} />
+      <div className={`flex-1 bg-card border border-border border-l-2 ${borderColor} rounded-xl p-4 hover:shadow-md transition-shadow duration-200`}>
+        <div className="flex flex-wrap justify-between items-start gap-2 mb-1">
+          <h3 className="font-semibold text-sm leading-snug">{title}</h3>
+          <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full whitespace-nowrap">
+            {date}
+          </span>
+        </div>
+        <p className="text-sm text-primary font-medium mb-2">{company}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+        {skills.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {skills.map((skill, i) => (
+              <span key={i} className="px-2 py-0.5 text-xs rounded-full bg-secondary text-secondary-foreground">
+                {skill}
+              </span>
+            ))}
           </div>
-
-          <p className="my-4">{description}</p>
-
-          {skills.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {skills.map((skill, index) => (
-                <Badge key={index} variant="secondary">
-                  {skill}
-                </Badge>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+        )}
+      </div>
     </div>
   );
 };
@@ -69,27 +62,32 @@ const ExperienceTimeline = ({
   education = [],
 }: ExperienceTimelineProps) => {
   return (
-    <div className="w-full bg-background p-4">
-      <h2 className="text-3xl font-bold mb-8 text-center">Experience</h2>
-
-      <div className="max-w-4xl mx-auto">
-        <h3 className="text-2xl font-semibold mb-6">Work Experience</h3>
+    <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
+      <div>
+        <h3 className="text-base font-semibold mb-6 flex items-center gap-2.5">
+          <span className="w-3 h-3 rounded-full bg-primary" />
+          Work Experience
+        </h3>
         {workExperience.map((item, index) => (
           <TimelineItem
             key={index}
             {...item}
             isLast={index === workExperience.length - 1}
+            type="work"
           />
         ))}
-
-        <Separator className="my-12" />
-
-        <h3 className="text-2xl font-semibold mb-6">Education</h3>
+      </div>
+      <div>
+        <h3 className="text-base font-semibold mb-6 flex items-center gap-2.5">
+          <span className="w-3 h-3 rounded-full bg-accent" />
+          Education
+        </h3>
         {education.map((item, index) => (
           <TimelineItem
             key={index}
             {...item}
             isLast={index === education.length - 1}
+            type="education"
           />
         ))}
       </div>
