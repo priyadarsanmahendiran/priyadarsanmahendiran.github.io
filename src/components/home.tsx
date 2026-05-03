@@ -363,7 +363,7 @@ const Home = () => {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-accent blur-2xl opacity-20 scale-110" />
                 <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden ring-4 ring-primary/20 ring-offset-4 ring-offset-background">
                   <img
-                    src="../assets/images/Priyadarsan.jpg"
+                    src="../assets/images/Priyadarsan.png"
                     alt="Priyadarsan Mahendiran"
                     className="w-full h-full object-cover"
                   />
